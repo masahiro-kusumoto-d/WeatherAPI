@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p 都道府県の天気予報を表示 to #{title}
+
+  a(href="/prefectures", class="btn btn-xs btn-warning") 全国の天気
+
+  hr
+  form(method='POST' action='/prefectures/10')
+    input(type='text', name='name' value='')
+    input(type='submit', value='submit')

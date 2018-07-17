@@ -1,0 +1,51 @@
+version: 2
+jobs:
+  build-and-test:
+    working_directory: ~/workspace
+    docker:
+      - image: circleci/ruby:2.4.1-node
+        environment:
+          BUNDLE_PATH: ./vendor/bundle
+    steps:
+      - run:
+          name: Install System Dependencies
+          command: |
+            sudo gem install bundler
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+          - gems-{{ checksum "Gemfile.lock" }}
+      - run: npm install
+      - run: npm install eslint
+      - run: bundle install
+      - run: npx eslint .
+      - run:
+          name: Run danger
+          command: bundle exec danger
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run: 
+          name: Run danger
+          command: |
+            npm install mocha
+            npm test
+
+  danger:
+    docker:
+      - image: dantoml/danger:latest
+    steps:
+      - checkout
+      - run: danger
+machine:
+  environment:
+    DANGER_GITHUB_API_TOKEN: ${DANGER_GITHUB_API_TOKEN}
+workflows:
+  version: 2
+  build-test-lint:
+    jobs:
+      - danger
+      - build-and-test
