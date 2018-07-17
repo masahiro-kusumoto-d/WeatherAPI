@@ -1,0 +1,307 @@
+swagger: '2.0'
+info:
+  description: |
+    都道府県情報、台風情報、天気情報に関するAPI
+  version: 1.0.0
+  title: Swagger Petstore
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+tags:
+- name: prefecture
+  description: "都道府県に関するAPI"
+
+- name: typhoon
+  description: "台風に関するAPI"
+
+- name: weather
+  description: "天気に関するAPI"
+
+paths:
+  /prefectures:
+    get:
+      tags:
+      - prefecture
+      summary: "全国の都道府県の情報を取得する"
+      operationId: prefecturesGet
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: object
+            properties:
+                date:
+                  type: string
+                  format: date-time
+                  example: "2018-07-13T10:30:50Z"
+                prefectures:
+                  type: array
+                  items:
+                    $ref: "#/definitions/Prefecture"
+
+  /prefectures/{prefectureId}:
+    get:
+      tags:
+      - prefecture
+      summary: "都道府県の情報を取得する"
+      operationId: prefectureGet
+      parameters:
+      - name: prefectureId
+        in: path
+        description: "保存したい都道府県のID"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Prefecture"
+
+  /prefectures/{prefectureId}/weathers:
+    post:
+      tags:
+      - prefecture
+      - weather
+      summary: "都道府県の天気の情報を保存する"
+      operationId: prefecturePostWether
+      parameters:
+      - name: prefectureId
+        in: path
+        description: "保存したい都道府県のID"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: object
+            properties:
+                prefecture:
+                  $ref: "#/definitions/Prefecture"
+                weathers:
+                  type: array
+                  items:
+                    $ref: "#/definitions/Weather"
+
+    get:
+      tags:
+      - prefecture
+      - weather
+      summary: "都道府県の天気の情報を取得"
+      operationId: prefectureGetWether
+      parameters:
+      - name: prefectureId
+        in: path
+        description: "取得したい都道府県のID"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: object
+            properties:
+                prefecture:
+                  $ref: "#/definitions/Prefecture"
+                weathers:
+                  type: array
+                  items:
+                    $ref: "#/definitions/Weather"
+    delete:
+      tags:
+      - prefecture
+      - weather
+      summary: "都道府県の天気の情報を削除"
+      operationId: prefectureDeleteWether
+      parameters:
+      - name: prefectureId
+        in: path
+        description: "削除したい都道府県のID"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: "successful operation"
+
+  /typhoons:
+    get:
+      tags:
+      - typhoon
+      summary: "全国の台風情報を取得"
+      operationId: typhoon
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Typhoon"
+
+  /typhoons/{typhoonId}:
+    get:
+      tags:
+      - typhoon
+      summary: "全国の台風情報を取得"
+      operationId: typhoonGet
+      parameters:
+      - name: typhoonId
+        in: path
+        description: "取得したい台風のID"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Typhoon"
+            
+    post:
+      tags:
+      - typhoon
+      summary: "全国の台風情報を取得"
+      operationId: typhoonPost
+      parameters:
+      - name: typhoonId
+        in: path
+        description: "保存したい台風のID"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Typhoon"
+
+    delete:
+      tags:
+      - typhoon
+      summary: "全国の台風情報を削除"
+      operationId: typhoonDelete
+      parameters:
+      - name: typhoonId
+        in: path
+        description: "削除したい台風のID"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: "successful operation"
+
+definitions:
+  Prefecture:
+    description: "都道府県のモデル"
+    type: object
+    properties:
+      id:
+        description: "都道府県のID"
+        type: integer
+        format: int64
+      name:
+        description: "都道府県の名前"
+        type: string
+        example: "Tokyo"
+      symbol_url:
+        description: "都道府県のシンボルのURL"
+        type: string
+        example: "http://www.metro.tokyo.jp/tosei/tokyoto/profile/gaiyo/images/symbol.gif"
+      # weather:
+      #   $ref: "#/definitions/Weather"
+
+  Weather:
+    description: "天気のモデル"
+    type: object
+    properties:
+      condition:
+        description: "天気の状態"
+        type: string
+        example: "晴れ"
+      date:
+        description: "天気の日付"
+        type: string
+        format: date-time
+        example: "2018-07-13T10:30:50Z"
+      icon_url:
+        description: "天気のアイコンURL"
+        type: string
+        example: "https://via.placeholder.com/350x150"
+      temp_max:
+        description: "最高気温"
+        type: number
+        example: 832.3
+      temp_min:
+        description: "最低気温"
+        type: number
+        example: -297
+
+  Typhoon:
+    description: "台風のモデル"
+    title: Typhoon
+    type: object
+    properties:
+      id:
+        description: "台風のID"
+        type: integer
+        format: int64
+      center_latitude:
+        description: "台風の中心緯度"
+        type: number
+        example: 19.4
+      center_longitude:
+        description: "台風の中心経度"
+        type: number
+        example: 118.5
+      central_pressure:
+        description: "中心気圧"
+        type: number
+        example: 900
+      intensity:
+        description: "台風の強さ"
+        type: string
+        example: "非常に強い"
+      date:
+        description: "台風の日付"
+        type: string
+        format: date-time
+        example: "2018-07-13T10:30:50Z"
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: http://petstore.swagger.io/oauth/dialog
+    flow: implicit
+    scopes:
+      write:pets: modify pets in your account
+      read:pets: read your pets
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+
+basePath: /kusumotoa/WeatherAPI/1.0.0
+
+produces:
+- application/json
+- application/xml
+consumes:
+- application/json
+- application/xml
+
+schemes:
+ - https
+ - http
+host: virtserver.swaggerhub.com
+
