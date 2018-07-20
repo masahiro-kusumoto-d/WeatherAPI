@@ -1,16 +1,27 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/workspace
     docker:
-      - image: circleci/node:7.10
-    working_directory: ~/repo
+      - image: circleci/ruby:2.4.1-node
+        environment:
+          BUNDLE_PATH: ./vendor/bundle
     steps:
+      - run:
+          name: Install System Dependencies
+          command: |
+            sudo gem install bundler
       - checkout
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
+          - gems-{{ checksum "Gemfile.lock" }}
       - run: npm install
+      - run: bundle install
+      - run:
+          name: Run danger
+          command: bundle exec danger
       - save_cache:
           paths:
             - node_modules
