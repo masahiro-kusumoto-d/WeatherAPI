@@ -19,6 +19,7 @@ jobs:
           - gems-{{ checksum "Gemfile.lock" }}
       - run: npm install
       - run: npm install mocha
+      - run: npm install eslint
       - run: bundle install
       - run:
           name: Run danger
