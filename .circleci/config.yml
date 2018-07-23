@@ -3,6 +3,7 @@ jobs:
   build-and-test:
     working_directory: ~/workspace
     docker:
+      - image: dantoml/danger:latest
       - image: circleci/ruby:2.4.1-node
         environment:
           BUNDLE_PATH: ./vendor/bundle
@@ -21,7 +22,8 @@ jobs:
       - run: npm install mocha
       - run: npm install eslint
       - run: bundle install
-      - run: npx eslint .
+      - run: npm run lint:checkstyle
+      - run: danger
       - run:
           name: Run danger
           command: bundle exec danger
@@ -31,13 +33,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
 
-  danger:
-    docker:
-      - image: dantoml/danger:latest
-    steps:
-      - checkout
-      - run: npm run lint:checkstyle
-      - run: danger
 machine:
   environment:
     DANGER_GITHUB_API_TOKEN: ${DANGER_GITHUB_API_TOKEN}
@@ -45,5 +40,4 @@ workflows:
   version: 2
   build-test-lint:
     jobs:
-      - danger
       - build-and-test
