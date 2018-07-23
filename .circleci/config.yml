@@ -36,6 +36,7 @@ jobs:
       - image: dantoml/danger:latest
     steps:
       - checkout
+      - run: npm run lint:checkstyle
       - run: danger
 machine:
   environment:
