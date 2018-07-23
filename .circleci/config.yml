@@ -18,11 +18,9 @@ jobs:
           - v1-dependencies-
           - gems-{{ checksum "Gemfile.lock" }}
       - run: npm install
-      
       - run: npm install eslint
       - run: bundle install
-      - run: npm run lint:checkstyle
-      - run: bundle exec danger
+      - run: npx eslint .
       - run:
           name: Run danger
           command: bundle exec danger
@@ -34,7 +32,6 @@ jobs:
           name: Run danger
           command: |
             npm test
-            npm install mocha
 
   danger:
     docker:
