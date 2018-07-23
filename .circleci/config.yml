@@ -28,7 +28,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: npm test
 
-danger:
+  danger:
     docker:
       - image: dantoml/danger:latest
     steps:
