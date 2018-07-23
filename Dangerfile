@@ -9,6 +9,5 @@ end
 # Warn when PR has no assignees
 warn("A pull request must have some assignees") if github.pr_json["assignee"].nil?
 
-scripts: {
-	"lint:checkstyle": "eslint src -f checkstyle -o checkstyle.xml"
-}
+checkstyle_format.base_path = Dir.pwd
+checkstyle_format.report 'app/build/reports/checkstyle/checkstyle.xml'

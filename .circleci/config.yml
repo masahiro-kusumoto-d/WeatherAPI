@@ -18,10 +18,11 @@ jobs:
           - v1-dependencies-
           - gems-{{ checksum "Gemfile.lock" }}
       - run: npm install
-      - run: npm install mocha
+      
       - run: npm install eslint
       - run: bundle install
-      - run: npx eslint .
+      - run: npm run lint:checkstyle
+      - run: bundle exec danger
       - run:
           name: Run danger
           command: bundle exec danger
@@ -29,15 +30,18 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm test
+      - run: 
+          name: Run danger
+          command: |
+            npm test
+            npm install mocha
 
   danger:
     docker:
       - image: dantoml/danger:latest
     steps:
       - checkout
-      - npm run lint:checkstyle
-      - bundle exec danger
+      - run: danger
 machine:
   environment:
     DANGER_GITHUB_API_TOKEN: ${DANGER_GITHUB_API_TOKEN}
