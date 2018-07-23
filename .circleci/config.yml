@@ -21,6 +21,7 @@ jobs:
       - run: npm install mocha
       - run: npm install eslint
       - run: bundle install
+      - run: npx eslint .
       - run:
           name: Run danger
           command: bundle exec danger

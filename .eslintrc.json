@@ -2,8 +2,15 @@
     "extends": ["eslint:recommended"],
     "plugins": [],
     "parserOptions": {},
-    "env": {"browser": true},
+    "env": {
+        "browser": true,
+        "node": true,
+        "mocha": true
+    },
     "globals": {},
-    "rules": {}
+    "extends": "eslint:recommended",
+    "rules": {
+        "semi": "error"
+    }
 }
 
