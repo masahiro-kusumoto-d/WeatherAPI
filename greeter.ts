@@ -15,7 +15,7 @@ class MyClass {
 }
 
 let myClass = new MyClass
-console.log(myClass)
+console.log(myClass);
 
 let b = <B> {}
 b.name = ''
