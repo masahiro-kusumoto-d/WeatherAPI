@@ -5,10 +5,10 @@
     "env": {
         "browser": true,
         "node": true,
-        "mocha": true
+        "mocha": true,
+        "es6": true
     },
     "globals": {},
-    "extends": "eslint:recommended",
     "rules": {
         "semi": "error"
     }
