@@ -4,3 +4,4 @@
 # Ignore bundler gems.
 vendor/bundler/
 
+node_modules/
