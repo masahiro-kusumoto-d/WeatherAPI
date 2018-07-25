@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/masahiro-kusumoto-d/WeatherAPI/tree/master.svg?style=svg)](https://circleci.com/gh/masahiro-kusumoto-d/WeatherAPI/tree/master)
+
 # WeatherAPI
 
 ### Swagger
