@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   const typhoons = sequelize.define('typhoons', {
     id: {
       type: DataTypes.INTEGER,
-      field: 'id',
       primaryKey: true
     },
     center_longitude: DataTypes.FLOAT,

@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   const weathers = sequelize.define('weathers', {
     id: {
       type: DataTypes.INTEGER,
-      field: 'id',
       primaryKey: true
     },
     prefecture_id: DataTypes.INTEGER,

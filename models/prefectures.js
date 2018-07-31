@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
   const prefectures = sequelize.define('prefectures', {
     id: {
       type: DataTypes.INTEGER,
-      field: 'id',
       primaryKey: true
     },
     name: DataTypes.STRING,

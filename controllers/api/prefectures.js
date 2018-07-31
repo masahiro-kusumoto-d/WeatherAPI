@@ -2,9 +2,11 @@
 function getPrefectures({ db }) {
   return async (req, res) => {
     db.prefectures.findAll({
-      order: [['id', 'ASC']]
+      order: [['id', 'ASC']],
+      include: [db.weathers]
     }).then(function (prefectures) {
       res.status(200);
+
       res.json({ prefectures });
     });
   };
