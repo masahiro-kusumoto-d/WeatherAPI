@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const weathers = sequelize.define('weathers', {
     id: {
       type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true
     },
     prefecture_id: DataTypes.INTEGER,
@@ -14,11 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
       timestamps: false
     });
-  weathers.associate = function (models) {
-    models.weathers.belongsTo(models.prefectures, {
-      onDelete: "CASCADE",
-      foreignKey: 'id'
-    });
-  };
+  weathers.associate = function () { };
   return weathers;
 };
