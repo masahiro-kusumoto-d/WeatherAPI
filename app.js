@@ -24,6 +24,8 @@ app.use('/', indexRouter);
 app.use('/prefectures', prefecturesRouter);
 app.use('/typhoons', typhoonsRouter);
 
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 // catch 404 and forward to error handler
 app.use(function (next) {
   next(createError(404));

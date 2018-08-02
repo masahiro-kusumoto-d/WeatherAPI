@@ -5,8 +5,8 @@ const models = require('../models');
 
 /* GET typhoons listing. */
 router.get('/', typhoonApi.getTyphoons({ db: models }));
-router.get('/:id', typhoonApi.getTyphoon({ db: models }));
+router.get('/:id(\\d+)', typhoonApi.getTyphoon({ db: models }));
 router.post('/', typhoonApi.postTyphoon({ db: models }));
-router.delete('/:id', typhoonApi.deleteTyphoon({ db: models }));
+router.delete('/:id(\\d+)', typhoonApi.deleteTyphoon({ db: models }));
 
 module.exports = router;
