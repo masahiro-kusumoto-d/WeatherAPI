@@ -91,7 +91,7 @@ describe('typhoons', () => {
             };
             const db = {
                 typhoons: {
-                    findOne: sinon.spy(
+                    findById: sinon.spy(
                         sinon.stub().resolves(stubTyphoon)
                     )
                 }
@@ -103,10 +103,10 @@ describe('typhoons', () => {
             };
             const req = { params: { id: 1 } };
 
-            await typhoonApi.getTyphoon({ db })(req, res, undefined);
+            await typhoonApi.getTyphoon({ db })(req, res, {});
 
-            assert(db.typhoons.findOne.calledOnce);
-            assert.deepEqual(db.typhoons.findOne.firstCall.args, [{ where: { id: 1 } }]);
+            assert(db.typhoons.findById.calledOnce);
+            assert.deepEqual(db.typhoons.findById.firstCall.args, [1]);
 
             assert.deepEqual(res.json.firstCall.args, [
                 {
@@ -126,7 +126,7 @@ describe('typhoons', () => {
         it('指定したIDの台風が存在しないとき404が返る', async () => {
             const db = {
                 typhoons: {
-                    findOne: sinon.spy(
+                    findById: sinon.spy(
                         sinon.stub().resolves(null)
                     ),
                 },
@@ -140,8 +140,8 @@ describe('typhoons', () => {
 
             await typhoonApi.getTyphoon({ db })(req, res, undefined);
 
-            assert(db.typhoons.findOne.calledOnce);
-            assert.deepEqual(db.typhoons.findOne.firstCall.args, [{ where: { id: 1 } }]);
+            assert(db.typhoons.findById.calledOnce);
+            assert.deepEqual(db.typhoons.findById.firstCall.args, [1]);
 
 
             assert.deepEqual(res.json.firstCall.args, [{ error: 'Typhoon Not Found' },]);
@@ -163,7 +163,7 @@ describe('typhoons', () => {
             };
             const db = {
                 typhoons: {
-                    findOne: sinon.spy(sinon.stub().resolves(stubTyphoon)),
+                    findById: sinon.spy(sinon.stub().resolves(stubTyphoon)),
                     create: sinon.spy(sinon.stub().resolves(stubTyphoon))
                 }
             };
@@ -180,7 +180,7 @@ describe('typhoons', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.typhoons.findOne.notCalled);
+            assert(db.typhoons.findById.notCalled);
 
             const callBacks = typhoonApi.postTyphoon({ db: db });
             assert.deepEqual(callBacks.length, 5);
@@ -216,7 +216,7 @@ describe('typhoons', () => {
             };
             const db = {
                 typhoons: {
-                    findOne: sinon.spy(sinon.stub().resolves(stubTyphoon)),
+                    findById: sinon.spy(sinon.stub().resolves(stubTyphoon)),
                     create: sinon.spy(sinon.stub().resolves(stubTyphoon))
                 }
             };
@@ -232,7 +232,7 @@ describe('typhoons', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.typhoons.findOne.notCalled);
+            assert(db.typhoons.findById.notCalled);
 
             const callBacks = typhoonApi.postTyphoon({ db: db });
             assert.deepEqual(callBacks.length, 5);
@@ -263,7 +263,7 @@ describe('typhoons', () => {
             };
             const db = {
                 typhoons: {
-                    findOne: sinon.spy(sinon.stub().resolves(stubTyphoon)),
+                    findById: sinon.spy(sinon.stub().resolves(stubTyphoon)),
                 }
             };
             const req = { params: { id: 1 } };
@@ -271,13 +271,13 @@ describe('typhoons', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.typhoons.findOne.notCalled);
+            assert(db.typhoons.findById.notCalled);
 
             await typhoonApi.deleteTyphoon({ db: db })(req, res, {});
             assert(res.status.calledOnce);
             assert.deepEqual(res.status.firstCall.args, [204]);
-            assert(db.typhoons.findOne.calledOnce);
-            assert.deepEqual(db.typhoons.findOne.firstCall.args, [{ where: { id: 1 } }]);
+            assert(db.typhoons.findById.calledOnce);
+            assert.deepEqual(db.typhoons.findById.firstCall.args, [1]);
             assert(stubTyphoon.destroy.calledOnce);
             assert.deepEqual(stubTyphoon.destroy.firstCall.args, []);
         });
@@ -285,7 +285,7 @@ describe('typhoons', () => {
         it('指定したIDで台風情報が保存されていない場合404を返す', async () => {
             const db = {
                 typhoons: {
-                    findOne: sinon.spy(sinon.stub().resolves(null))
+                    findById: sinon.spy(sinon.stub().resolves(null))
                 }
             };
             const req = { params: { id: 1 } };
@@ -293,11 +293,11 @@ describe('typhoons', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.typhoons.findOne.notCalled);
+            assert(db.typhoons.findById.notCalled);
 
             await typhoonApi.deleteTyphoon({ db: db })(req, res, {});
-            assert(db.typhoons.findOne.calledOnce);
-            assert.deepEqual(db.typhoons.findOne.firstCall.args, [{ where: { id: 1 } }]);
+            assert(db.typhoons.findById.calledOnce);
+            assert.deepEqual(db.typhoons.findById.firstCall.args, [1]);
             assert.deepEqual(res.json.firstCall.args, [
                 {
                     error: 'Typhoon Not Found',

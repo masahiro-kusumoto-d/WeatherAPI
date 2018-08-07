@@ -12,7 +12,7 @@ function getTyphoons({ db }) {
 
 function getTyphoon({ db }) {
     return async (req, res) => {
-        const typhoon = await db.typhoons.findOne({ where: { id: req.params.id } });
+        const typhoon = await db.typhoons.findById(req.params.id);
 
         if (!typhoon) {
             res.status(404);
@@ -62,7 +62,7 @@ function postTyphoon({ db }) {
 
 function deleteTyphoon({ db }) {
     return async (req, res) => {
-        const typhoon = await db.typhoons.findOne({ where: { id: req.params.id } });
+        const typhoon = await db.typhoons.findById(req.params.id);
         if (!typhoon) {
             res.status(404);
             res.json({ error: 'Typhoon Not Found' });

@@ -13,8 +13,7 @@ function getPrefectures({ db }) {
 
 function getPrefecture({ db }) {
   return async (req, res) => {
-    const prefecture = await db.prefectures.findOne({
-      where: { id: req.params.id },
+    const prefecture = await db.prefectures.findById(req.params.id, {
       include: [db.weathers]
     });
 
@@ -74,8 +73,7 @@ function postPrefecture({ db }) {
         temp_max: req.body.temp_max,
         icon_url: req.body.icon_url
       });
-      const result = await db.prefectures.findOne({
-        where: { id: prefecture.id },
+      const result = await db.prefectures.findById(prefecture.id, {
         include: [db.weathers]
       });
       res.status(201);
@@ -86,7 +84,7 @@ function postPrefecture({ db }) {
 
 function deletePrefecture({ db }) {
   return async (req, res) => {
-    const prefecture = await db.prefectures.findOne({ where: { id: req.params.id } });
+    const prefecture = await db.prefectures.findById(req.params.id);
 
     if (!prefecture) {
       res.status(404);

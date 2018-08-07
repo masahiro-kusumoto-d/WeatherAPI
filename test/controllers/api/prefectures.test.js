@@ -114,7 +114,7 @@ describe('prefectures', () => {
             };
             const db = {
                 prefectures: {
-                    findOne: sinon.spy(sinon.stub().resolves(stubPrefecture)),
+                    findById: sinon.spy(sinon.stub().resolves(stubPrefecture)),
                     create: sinon.spy(sinon.stub().resolves(stubPrefecture))
                 },
                 weathers: {
@@ -135,7 +135,7 @@ describe('prefectures', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.prefectures.findOne.notCalled);
+            assert(db.prefectures.findById.notCalled);
 
             const callBacks = prefectureApi.postPrefecture({ db: db });
             assert.deepEqual(callBacks.length, 7);
@@ -186,7 +186,7 @@ describe('prefectures', () => {
             };
             const db = {
                 prefectures: {
-                    findOne: sinon.spy(sinon.stub().resolves(stubPrefecture)),
+                    findById: sinon.spy(sinon.stub().resolves(stubPrefecture)),
                     create: sinon.spy(sinon.stub().resolves(stubPrefecture))
                 },
                 weathers: {
@@ -207,7 +207,7 @@ describe('prefectures', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.prefectures.findOne.notCalled);
+            assert(db.prefectures.findById.notCalled);
 
             const callBacks = prefectureApi.postPrefecture({ db: db });
             assert.deepEqual(callBacks.length, 7);
@@ -247,7 +247,7 @@ describe('prefectures', () => {
             };
             const db = {
                 prefectures: {
-                    findOne: sinon.spy(sinon.stub().resolves(stubPrefecture))
+                    findById: sinon.spy(sinon.stub().resolves(stubPrefecture))
                 }
             };
             const req = { params: { id: 1 } };
@@ -255,13 +255,13 @@ describe('prefectures', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.prefectures.findOne.notCalled);
+            assert(db.prefectures.findById.notCalled);
 
             await prefectureApi.deletePrefecture({ db: db })(req, res, {});
             assert(res.status.calledOnce);
             assert.deepEqual(res.status.firstCall.args, [204]);
-            assert(db.prefectures.findOne.calledOnce);
-            assert.deepEqual(db.prefectures.findOne.firstCall.args, [{ where: { id: 1 } }]);
+            assert(db.prefectures.findById.calledOnce);
+            assert.deepEqual(db.prefectures.findById.firstCall.args, [1]);
             assert(stubPrefecture.destroy.calledOnce);
             assert.deepEqual(stubPrefecture.destroy.firstCall.args, []);
         });
@@ -269,7 +269,7 @@ describe('prefectures', () => {
         it('指定したIDで都道府県情報が保存されていない場合404を返す', async () => {
             const db = {
                 prefectures: {
-                    findOne: sinon.spy(sinon.stub().resolves(null))
+                    findById: sinon.spy(sinon.stub().resolves(null))
                 }
             };
             const req = { params: { id: 1 } };
@@ -277,11 +277,11 @@ describe('prefectures', () => {
                 status: sinon.spy(),
                 json: sinon.spy(),
             };
-            assert(db.prefectures.findOne.notCalled);
+            assert(db.prefectures.findById.notCalled);
 
             await prefectureApi.deletePrefecture({ db: db })(req, res, {});
-            assert(db.prefectures.findOne.calledOnce);
-            assert.deepEqual(db.prefectures.findOne.firstCall.args, [{ where: { id: 1 } }]);
+            assert(db.prefectures.findById.calledOnce);
+            assert.deepEqual(db.prefectures.findById.firstCall.args, [1]);
             assert.deepEqual(res.json.firstCall.args, [
                 {
                     error: 'Prefecture Not Found',
@@ -312,7 +312,7 @@ describe('prefectures', () => {
             };
             const db = {
                 prefectures: {
-                    findOne: sinon.spy(
+                    findById: sinon.spy(
                         sinon.stub().resolves(stubPrefecture)
                     ),
                 },
@@ -324,15 +324,10 @@ describe('prefectures', () => {
             };
             const req = { params: { id: 1 } };
 
-            await prefectureApi.getPrefecture({ db })(req, res, undefined);
+            await prefectureApi.getPrefecture({ db })(req, res, {});
 
-            assert(db.prefectures.findOne.calledOnce);
-            assert.deepEqual(db.prefectures.findOne.firstCall.args, [
-                {
-                    where: { id: 1 },
-                    include: [undefined]
-                }
-            ]);
+            assert(db.prefectures.findById.calledOnce);
+            assert.deepEqual(db.prefectures.findById.firstCall.args, [1, { include: [undefined] }]);
 
 
             assert.deepEqual(res.json.firstCall.args, [
@@ -359,7 +354,7 @@ describe('prefectures', () => {
         it('都道府県が存在しないIDのとき404が返る', async () => {
             const db = {
                 prefectures: {
-                    findOne: sinon.spy(
+                    findById: sinon.spy(
                         sinon.stub().resolves(null)
                     ),
                 },
@@ -375,15 +370,10 @@ describe('prefectures', () => {
                 },
             };
 
-            await prefectureApi.getPrefecture({ db })(req, res, undefined);
+            await prefectureApi.getPrefecture({ db })(req, res, {});
 
-            assert(db.prefectures.findOne.calledOnce);
-            assert.deepEqual(db.prefectures.findOne.firstCall.args, [
-                {
-                    where: { id: 1 },
-                    include: [undefined]
-                }
-            ]);
+            assert(db.prefectures.findById.calledOnce);
+            assert.deepEqual(db.prefectures.findById.firstCall.args, [1, { include: [undefined] }]);
 
 
             assert.deepEqual(res.json.firstCall.args, [
