@@ -220,7 +220,7 @@ describe('prefectures', () => {
             await callBacks[6](req, res, () => { });
 
             assert(res.status.calledOnce);
-            assert.deepEqual(res.status.firstCall.args, [422]);
+            assert.deepEqual(res.status.firstCall.args, [400]);
             assert(res.json.calledOnce);
             const err = validationResult(req);
             assert.deepEqual(res.json.args, [[{ error: err.mapped() }]]);

@@ -44,7 +44,7 @@ function postTyphoon({ db }) {
         async (req, res) => {
             const err = validationResult(req);
             if (!err.isEmpty()) {
-                res.status(422);
+                res.status(400);
                 res.json({ error: err.mapped() });
                 return;
             }
