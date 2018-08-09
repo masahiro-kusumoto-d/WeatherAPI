@@ -1,11 +1,28 @@
 const { check, validationResult } = require('express-validator/check');
 
-function getPrefectures({ db }) {
-  return async (req, res) => {
-    const prefectures = await db.prefectures.findAll({
+async function getPrefecturesFromDB(db) {
+  return new Promise(resolve => {
+    const prefectures = db.prefectures.findAll({
       order: [['id', 'ASC']],
       include: [db.weathers]
     });
+    resolve(prefectures);
+  });
+}
+
+function getIndex({ db }) {
+  return async (req, res) => {
+    const prefectures = await getPrefecturesFromDB(db);
+    res.render('prefectures', {
+      title: 'Express',
+      prefectures: prefectures
+    });
+  };
+}
+
+function getPrefectures({ db }) {
+  return async (req, res) => {
+    const prefectures = await getPrefecturesFromDB(db);
     res.status(200);
     res.json(prefectures);
   };
@@ -73,11 +90,11 @@ function postPrefecture({ db }) {
         temp_max: req.body.temp_max,
         icon_url: req.body.icon_url
       });
-      const result = await db.prefectures.findById(prefecture.id, {
-        include: [db.weathers]
-      });
+      // const result = await db.prefectures.findById(prefecture.id, {
+      //   include: [db.weathers]
+      // });
       res.status(201);
-      res.json(result);
+      res.redirect('/prefectures');
     }
   ];
 }
@@ -97,4 +114,4 @@ function deletePrefecture({ db }) {
   };
 }
 
-module.exports = { getPrefectures, getPrefecture, postPrefecture, deletePrefecture };
+module.exports = { getIndex, getPrefectures, getPrefecture, postPrefecture, deletePrefecture };

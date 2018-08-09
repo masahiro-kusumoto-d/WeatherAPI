@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+  p 都道府県の天気予報を表示 to #{title}
+
+  each prefecture in prefectures
+    .container
+    .row
+      .col-sm-6
+        p #{prefecture.name}
+      .col-sm-6
+        p #{prefecture.weather.condition}
